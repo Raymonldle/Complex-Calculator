@@ -26,6 +26,12 @@ def clearField():
     calculation = ""
     textResult.delete(1.0,"end")
 
+def deleteLastChar():
+    global calculation
+    calculation = calculation[:-1]
+    textResult.delete(1.0, "end")
+    textResult.insert(1.0, calculation)
+
 def keyPressed(event):
     char = event.char
     if char in "0123456789+-*/()":
@@ -33,6 +39,8 @@ def keyPressed(event):
     elif char == "\r":
         evaluateCalculation()
     elif char == "\x08":
+        deleteLastChar()
+    elif char == "C":
         clearField()
 
 root = tk.Tk()
@@ -95,11 +103,14 @@ btnOpen.grid(row=5,column=1)
 btnClose = tk.Button(root, text=")",command=lambda: addToCalculator(")"), width=5,font=("Arial",14))
 btnClose.grid(row=5,column=3)
 
-btnClear = tk.Button(root, text="Clear",command=clearField, width=11,font=("Arial",14))
-btnClear.grid(row=6,column=1, columnspan=2)
+btnClear = tk.Button(root, text="Clear",command=clearField, width=5,font=("Arial",14))
+btnClear.grid(row=6,column=1)
 
 btnEquals = tk.Button(root, text="=",command=evaluateCalculation, width=11,font=("Arial",14))
 btnEquals.grid(row=6,column=3, columnspan=2)
+
+btnDelete = tk.Button(root, text="Del", command=deleteLastChar, width=5, font=("Arial", 14))
+btnDelete.grid(row=6,column=2)
 
 root.bind("<Key>", keyPressed)
 
